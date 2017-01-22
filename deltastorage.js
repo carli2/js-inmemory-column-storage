@@ -53,7 +53,10 @@ function DeltaStorage(table) {
 		return size + insertList.length - 1;
 	}
 
-	// TODO: Array.prototype.slice.call(arr); neue Table bauen
+	this.flush = function () {
+		// TODO: build new table from delta
+		// TODO: Array.prototype.slice.call(arr);
+	}
 }
 
 module.exports = DeltaStorage;
