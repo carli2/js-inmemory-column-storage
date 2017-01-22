@@ -53,15 +53,17 @@ function startServer() {
 	console.log(tables.Maschine.lookup([1,2,3]));
 
 	// SELECT * FROM GehaltBonus, Mitarbeiter WHERE GehaltBonus.Mitarbeiter = Mitarbeiter.ID
-	var uptime = process.uptime();
-	var maids = tables.Mitarbeiter.cols.ID.getAll();
-	for (var i = 0; i < maids.length; i++) {
-		var x = tables.Mitarbeiter.lookup(i);
-		var ma = tables.GehaltBonus.cols.Mitarbeiter.search(maids[i]);
-		for (var j = 0; j < ma.length; j++) {
-			var y = tables.GehaltBonus.lookup(ma[j], undefined, Object.create(x));
-			//console.log(y);
+	for (var n = 0; n < 200; n++) {
+		var uptime = process.uptime();
+		var maids = tables.Mitarbeiter.cols.ID.getAll();
+		for (var i = 0; i < maids.length; i++) {
+			var x = tables.Mitarbeiter.lookup(i);
+			var ma = tables.GehaltBonus.cols.Mitarbeiter.search(maids[i]);
+			for (var j = 0; j < ma.length; j++) {
+				var y = tables.GehaltBonus.lookup(ma[j], undefined, Object.create(x));
+				//console.log(y);
+			}
 		}
+		console.log(process.uptime()-uptime);
 	}
-	console.log(process.uptime()-uptime);
 }

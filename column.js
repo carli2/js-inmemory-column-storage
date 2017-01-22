@@ -1,3 +1,5 @@
+var HashTable = require('hashtable');
+
 function optimizeIndices (arr) {
 	if (arr.length < 256) {
 		return Uint8Array.from(arr);
@@ -21,25 +23,25 @@ function Column(table, name, data) {
 		// Strings: Dictionary
 		if (typeof data[0] === 'string') {
 			// Dictionary bilden
-			self.dictReverse = {};
+			self.dictReverse = new HashTable();
 			data.forEach(function (x) {
-				self.dictReverse[x] = true;
+				if (x) self.dictReverse.put(x, true);
 			});
 			// Dictionary sortieren, Index-Lookup bauen
 			self.dict = Object.keys(self.dictReverse).sort();
 			self.dict.forEach(function (x, i) {
-				self.dictReverse[x] = i;
+				if (x) self.dictReverse.put(x, i);
 			});
 			// Werte ersetzen
 			data.forEach(function (x, i) {
-				data[i] = self.dictReverse[x];
+				if (x) data[i] = self.dictReverse.get(x);
 			});
 			// Funktionen ersetzen
 			self.get = function (recId) {
 				return self.dict[data[recId]];
 			};
 			self.search = function (value) {
-				return search_internal(self.dictReverse[value] | 0);
+				return search_internal(self.dictReverse.get(value) | 0);
 			};
 			data = optimizeIndices(data);
 		} else {

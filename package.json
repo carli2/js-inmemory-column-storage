@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "hashtable": "^2.0.2",
     "mysql": "^2.12.0"
   }
 }
