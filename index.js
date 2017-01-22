@@ -52,11 +52,16 @@ function startServer() {
 
 	console.log(tables.Maschine.lookup([1,2,3]));
 
+	// SELECT * FROM GehaltBonus, Mitarbeiter WHERE GehaltBonus.Mitarbeiter = Mitarbeiter.ID
 	var uptime = process.uptime();
-	var ids = tables.GehaltBonus.cols.ID.getAll();
-	for (var i = 0; i < ids.length; i++) {
-		var x = tables.GehaltBonus.lookup(tables.GehaltBonus.cols.ID.search(ids[i]));
-		//console.log(ids[i], x);
+	var maids = tables.Mitarbeiter.cols.ID.getAll();
+	for (var i = 0; i < maids.length; i++) {
+		var x = tables.Mitarbeiter.lookup(i);
+		var ma = tables.GehaltBonus.cols.Mitarbeiter.search(maids[i]);
+		for (var j = 0; j < ma.length; j++) {
+			var y = tables.GehaltBonus.lookup(ma[j], undefined, Object.create(x));
+			//console.log(y);
+		}
 	}
 	console.log(process.uptime()-uptime);
 }

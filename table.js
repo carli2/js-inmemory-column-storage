@@ -8,17 +8,20 @@ function Table(name, cols, rows) {
 		self.cols[col.name] = new Column(self, col.name, rows);
 	});
 
-	this.lookup = function (ids, cols) {
-		if (!cols) cols = Object.keys(this.cols);
-		var list = [];
-		for (var i = 0; i < ids.length; i++) {
-			var result = {};
+	this.lookup = function (ids, cols, result) {
+		cols = cols || Object.keys(this.cols);
+		if (typeof ids === 'number') {
+			result = result || {};
 			for (var j = 0; j < cols.length; j++) {
-				result[cols[j]] = this.cols[cols[j]].get(ids[i]);
+				result[cols[j]] = this.cols[cols[j]].get(ids);
 			}
-			list.push(result);
+		} else {
+			result = result || [];
+			for (var i = 0; i < ids.length; i++) {
+				result.push(this.lookup(ids[i], cols));
+			}
 		}
-		return list;
+		return result;
 	}
 }
 
