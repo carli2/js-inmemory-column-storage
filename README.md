@@ -15,10 +15,12 @@ Interfaces
 ----------
 
 Table and DeltaStorage provide the following interface:
+- constructor Table(name, cols, rows) is compatible with (results, fields) from Node.js MySQL connector and is ment for importing tables
 - lookup(id_or_array_of_ids, [cols], [object_or_list_to_append]) creates a object or a list of objects given a id or list of ids and optinally a list of columns to retrieve; Runtime is O(1) for IDs and O(N) for a list of IDs
 - cols: Object containing all columns
 
 DeltaStorage also has the following methods:
+- constructor DeltaStorage(table) creates an overlay over a existing table and therefore allow changes to it
 - delete(recId) deletes the record with the specified record id, Runtime is O(1) but slows down future queries
 - insert(record) inserts the given record into the table. record should have properties named after the table's columns, Runtime is O(1) but slows down future queries
 - flush() rebuilds the underlying table from the table and delta - speeds up queries
